@@ -1,0 +1,54 @@
+Actor HasNightmareImpShield : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor HasNightmareImpFatality: Inventory
+{
+inventory.maxamount 1
+}
+
+Actor SKNightmareImp : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor NightmareImpFatality : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor NightmareImpFatality2 : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor NightmareSpectreFatality : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor NightmareSpectreFatality2 : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor NightmareSpectreFatality3 : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor GrabbedANightmareImp : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor ExecuteDownedNightmareImp : Inventory
+{
+inventory.maxamount 1
+}
+
+Actor IsFinalDoom : Inventory
+{
+inventory.maxamount 1
+}

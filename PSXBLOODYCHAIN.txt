@@ -1,0 +1,4 @@
+Actor PSXBloodyChain : BDECchainHook replaces Archvile
+{
+
+}

@@ -1,0 +1,635 @@
+// PSX Doom status bar recreation by Dragonsbrethren
+Height 32;
+MonospaceFonts true, "0";
+Resolution 256, 240;
+
+MugShot "XDeath"
+{
+	EXP0 4;
+	EXP1 4;
+	EXP2 4;
+	EXP3 4;
+	EXP4 4;
+	EXP5 -1;
+//	NULL -1;
+}
+
+StatusBar Normal
+{
+	DrawSwitchableImage IsFinalDoom, "HUDBAR", "HUDBARFD", 0, 208;
+	
+	InInventory IsFinalDoom, 1
+	{
+		DrawNumber 3, FBIGFONT, Untranslated, Ammo1, 39, 212;
+		DrawNumber 3, FBIGFONT, Untranslated, Health, 82, 212;
+		DrawNumber 3, FBIGFONT, Untranslated, Armor, 179, 212;
+	}
+	else
+	{
+		DrawNumber 3, BIGFONT, Untranslated, Ammo1, 39, 212;
+		DrawNumber 3, BIGFONT, Untranslated, Health, 82, 212;
+		DrawNumber 3, BIGFONT, Untranslated, Armor, 179, 212;
+	}
+	
+	//STAMINA	
+	drawnumber 4, SMALLFONT, white, Ammo UsedStamina, whennotzero | interpolate(4), 160, 160, 0;
+	
+	//RADSUIT
+	drawnumber 4, SMALLFONT, green, PowerupTime RadSuit, whennotzero, 20, 160, 0;
+	
+	//INVULNERABILITY
+	drawnumber 4, SMALLFONT, Black, PowerupTime InvulnerabilitySphere, whennotzero, 40, 160, 0;
+	
+	//INVISIBILITY
+	drawnumber 4, SMALLFONT, Blue, PowerupTime BlurSphere, whennotzero, 60, 160, 0;
+	
+	//INFRARED
+	drawnumber 4, SMALLFONT, White, PowerupTime ArtiTorch, whennotzero, 80, 160, 0;
+	
+	//GRENADES
+	drawimage "GRNDA", 280, 230;
+	drawnumber 4, SMALLFONT, red, Ammo GrenadeAmmo, 286, 230, 0;
+	
+	drawimage "", -39, 212;
+	drawnumber 3, DIGINUMBER, untranslated, ammo2, fillzeros, -7, 212;
+	
+	drawselectedinventory alternateonempty, INDEXFONT, 143, 168
+	{
+
+		InInventory GenderMale, 1
+		{
+		drawmugshot "STM", 5, 111, 208;
+		}
+		
+		InInventory GenderFemale, 1
+		{
+		drawmugshot "GAL", 5, 111, 208;
+		}
+	}
+	
+	/* PSX Doom has "combined" key icons in multiplayer by displaying the skulls
+		on top of the cards */
+	DrawSwitchableImage keyslot 1, "", "HUDKEYS2", 100, 212;
+	DrawSwitchableImage keyslot 2, "", "HUDKEYS0", 100, 220;
+	DrawSwitchableImage keyslot 3, "", "HUDKEYS1", 100, 228;
+	
+	DrawSwitchableImage keyslot 4, "", "HUDKEYS5", 102, 212;
+	DrawSwitchableImage keyslot 5, "", "HUDKEYS3", 102, 220;
+	DrawSwitchableImage keyslot 6, "", "HUDKEYS4", 102, 228;
+	
+	DrawMugshot 5, XDeathFace, 118, 210;
+	
+
+	GameMode deathmatch, teamgame
+	{
+		/* Offsets guessed from YouTube video - the "FRAG" text is not lined up
+			with the other status bar text for some reason */
+		/* MG_Man: But this is kinda dumb so I fixed it! I highly doubt it was
+			intended anyways. */
+		DrawSwitchableImage IsFinalDoom,"HUDFRAG","HUDFRGFD", 208, 229;
+		
+		InInventory IsFinalDoom, 1
+		{
+			DrawNumber 3, FBIGFONT, Untranslated, frags, 234, 212;
+		}
+		else
+		{
+			DrawNumber 3, BIGFONT, Untranslated, frags, 234, 212;
+		}
+	}
+	
+	GameMode cooperative, singleplayer
+	{
+		DrawSwitchableImage IsFinalDoom, "HUDARMS", "HUDARMFD", 200, 213;
+		
+		/* Acquired weapons are drawn based on their inventory item rather than
+			slots - this is so the slots don't need to be shifted from their PC
+			defaults to replicate the PSX bar's numbering. */
+		DrawSwitchableImage Shot_gun,			"", "HUDNUM3", 230, 215;
+		DrawSwitchableImage SSG,				"", "HUDNUM3", 230, 215;
+		DrawSwitchableImage AssaultShotgun,		"", "HUDNUM3", 230, 215;
+		
+		DrawSwitchableImage Minigun,			"", "HUDNUM4", 243, 215;
+		DrawSwitchableImage Rifle,				"", "HUDNUM4", 243, 215;
+		DrawSwitchableImage Machinegun, 		"", "HUDNUM4", 243, 215;
+		
+		DrawSwitchableImage Rocket_Launcher,	"", "HUDNUM5", 204, 227;
+		DrawSwitchableImage GrenadeLauncher,	"", "HUDNUM5", 204, 227;
+		
+		DrawSwitchableImage RailGun,			"", "HUDNUM6", 217, 227;
+		DrawSwitchableImage Plasma_Gun,			"", "HUDNUM6", 217, 227;
+		
+		DrawSwitchableImage BFG10k,				"", "HUDNUM7", 230, 227;
+		DrawSwitchableImage Unmaker,			"", "HUDNUM7", 230, 227;
+		DrawSwitchableImage BIG_FUCKING_GUN,	"", "HUDNUM7", 230, 227;
+		
+		DrawSwitchableImage HellishMissileLauncher,			"", "HUDNUM8", 243, 227;
+		DrawSwitchableImage FlameCannon,					"", "HUDNUM8", 243, 227;
+		
+		// Handles drawing the box around the selected weapon.
+		IsSelected BrutalAxe, Melee_Attacks, Chain_Saw 
+		{
+			DrawImage "HUDWEAP", 199, 212;
+		}
+		IsSelected BrutalPistol, BrutalSMG, MP40
+		{
+			DrawImage "HUDWEAP", 212, 212;
+		}
+		IsSelected Shot_gun, AssaultShotgun, SSG
+		{
+			DrawImage "HUDWEAP", 225, 212;
+		}
+		IsSelected Machinegun, Rifle, MiniGun //, HitlersBuzzsaw
+		{
+			DrawImage "HUDWEAP", 238, 212;
+		}
+		IsSelected GrenadeLauncher, Rocket_Launcher
+		{
+			DrawImage "HUDWEAP", 199, 224;
+		}
+		IsSelected RailGun, Plasma_Gun
+		{
+			DrawImage "HUDWEAP", 212, 224;
+		}
+		IsSelected BFG10K, BIG_FUCKING_GUN, Unmaker
+		{
+			DrawImage "HUDWEAP", 225, 224;
+		}
+		IsSelected HellishMissileLauncher, FlameCannon
+		{
+			DrawImage "HUDWEAP", 238, 224;
+		}
+	}
+}
+
+//Fullscreen HUD for PSX Doom
+statusbar fullscreen, fullscreenoffsets, 1.0
+{
+	drawSwitchableimage IsFinalDoom, "HUDBAMMO", "HUDFAMMO", 7, -10;
+	drawSwitchableimage IsFinalDoom, "HUDBHP", "HUDFHP", 52, -10;
+	drawSwitchableimage IsFinalDoom, "HUDBARMR", "HUDFARMR", -106, -10;
+	
+	InInventory IsFinalDoom, 1
+	{
+		DrawNumber 3, FBIGFONT, Untranslated, Ammo1, 39, -27;
+		DrawNumber 3, FBIGFONT, Untranslated, Health, 82, -27;
+		DrawString FBIGFONT, Untranslated, "%", 93, -27;
+		DrawNumber 3, FBIGFONT, Untranslated, Armor, -77, -27;
+		DrawString FBIGFONT, Untranslated, "%", -66, -27;
+	}
+	else
+	{
+		DrawNumber 3, BIGFONT, Untranslated, Ammo1, 39, -27;
+		DrawNumber 3, BIGFONT, Untranslated, Health, 82, -27;
+		DrawString BIGFONT, Untranslated, "%", 93, -27;
+		DrawNumber 3, BIGFONT, Untranslated, Armor, -77, -27;
+		DrawString BIGFONT, Untranslated, "%", -66, -27;
+	}
+	
+	//STAMINA	
+	drawnumber 4, SMALLFONT, white, Ammo UsedStamina, whennotzero | interpolate(4), 160, 160, 0;
+	
+	//RADSUIT
+	drawnumber 4, SMALLFONT, green, PowerupTime RadSuit, whennotzero, 20, 160, 0;
+	
+	//INVULNERABILITY
+	drawnumber 4, SMALLFONT, Black, PowerupTime InvulnerabilitySphere, whennotzero, 40, 160, 0;
+	
+	//INVISIBILITY
+	drawnumber 4, SMALLFONT, Blue, PowerupTime BlurSphere, whennotzero, 60, 160, 0;
+	
+	//INFRARED
+	drawnumber 4, SMALLFONT, White, PowerupTime ArtiTorch, whennotzero, 80, 160, 0;
+	
+	//GRENADES
+	drawimage "GRNDA", 280, 230;
+	drawnumber 4, SMALLFONT, red, Ammo GrenadeAmmo, 286, 230, 0;
+	
+	drawimage "", -39, 212;
+	drawnumber 3, DIGINUMBER, untranslated, ammo2, fillzeros, -7, 212;
+	
+	drawselectedinventory alternateonempty, INDEXFONT, 143, 168
+	{
+
+		InInventory GenderMale, 1
+		{
+		drawmugshot "STM", 5, 111, 208;
+		}
+		
+		InInventory GenderFemale, 1
+		{
+		drawmugshot "GAL", 5, 111, 208;
+		}
+	}
+	
+	GameMode deathmatch, teamgame
+	{
+		/* Offsets guessed from YouTube video - the "FRAG" text is not lined up
+			with the other status bar text for some reason */
+		/* MG_Man: But this is kinda dumb so I fixed it! I highly doubt it was
+			intended anyways. */
+		DrawSwitchableImage IsFinalDoom,"HUDFRGF","HUDFRFFD", -48, -10;
+		
+		InInventory IsFinalDoom, 1
+		{
+			DrawNumber 3, FBIGFONT, Untranslated, frags, -15, -27;
+		}
+		else
+		{
+			DrawNumber 3, BIGFONT, Untranslated, frags, -15, -27;
+		}
+	}
+	
+	GameMode cooperative, singleplayer
+	{
+		alpha 0.5
+		{
+			DrawSwitchableImage IsFinalDoom, "HUDARMS", "HUDARMFD", -56, -26;
+					
+			DrawSwitchableImage Shot_gun,			"", "HUDNUM3", -26, -24;
+			DrawSwitchableImage AssaultShotgun,		"", "HUDNUM3", -26, -24;
+			DrawswitchableImage SSG,				"", "HUDNUM3", -26, -24;
+			
+			DrawSwitchableImage MachineGun,			"", "HUDNUM4", -13, -24;
+			DrawswitchableImage Rifle, 				"", "HUDNUM4", -13, -24;
+			DrawSwitchableImage MiniGun,			"", "HUDNUM4", -13, -24;
+			
+			DrawSwitchableImage GrenadeLauncher,	"", "HUDNUM5", -52, -12;
+			DrawSwitchableImage Rocket_Launcher,	"", "HUDNUM5", -52, -12;
+			
+			DrawSwitchableImage RailGun,			"", "HUDNUM6", -39, -12;
+			DrawSwitchableImage Plasma_Gun,			"", "HUDNUM6", -39, -12;
+			
+			DrawSwitchableImage BFG10k,				"", "HUDNUM7", -26, -12;
+			DrawSwitchableImage BIG_FUCKING_GUN,	"", "HUDNUM7", -26, -12;
+			DrawSwitchableImage Unmaker,			"", "HUDNUM7", -26, -12;
+			
+			DrawSwitchableImage HellishMissileLauncher,			"", "HUDNUM8", -13, -12;
+			DrawSwitchableImage FlameCannon,			"", "HUDNUM8", -13, -12;
+		}
+		
+		alpha 0.6
+		{
+			IsSelected Melee_Attacks, Chain_saw, BrutalAxe
+			{
+				DrawImage "HUDWEAP", -57, -27;
+			}
+			IsSelected BrutalPistol, BrutalSMG, MP40
+			{
+				DrawImage "HUDWEAP", -44, -27;
+			}
+			IsSelected AssaultShotgun, Shot_Gun, SSG
+			{
+				DrawImage "HUDWEAP", -31, -27;
+			}
+			IsSelected MachineGun, Minigun, Rifle
+			{
+				DrawImage "HUDWEAP", -18, -27;
+			}
+			IsSelected GrenadeLauncher, Rocket_Launcher
+			{
+				DrawImage "HUDWEAP", -57, -15;
+			}
+			IsSelected RailGun, Plasma_Gun
+			{
+				DrawImage "HUDWEAP", -44, -15;
+			}
+			IsSelected BFG10k, BIG_FUCKING_GUN, Unmaker
+			{
+				DrawImage "HUDWEAP", -31, -15;
+			}
+			IsSelected HellishMissileLauncher, FlameCannon
+			{
+				DrawImage "HUDWEAP", -18, -15;
+			}
+		}
+	}
+	
+	alpha 0.5
+	{
+		DrawSwitchableImage keyslot 1, "", "HUDKEYS2", 100, -28;
+		DrawSwitchableImage keyslot 2, "", "HUDKEYS0", 100, -19;
+		DrawSwitchableImage keyslot 3, "", "HUDKEYS1", 100, -10;
+		
+		DrawSwitchableImage keyslot 4, "", "HUDKEYS5", 102, -28;
+		DrawSwitchableImage keyslot 5, "", "HUDKEYS3", 102, -19;
+		DrawSwitchableImage keyslot 6, "", "HUDKEYS4", 102, -10;
+	}
+}
+
+//blehblehbleh
+//base Doom;
+//height 32;
+//monospacefonts true, "0";
+
+statusbar fullscreen
+{
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// SIMPLE 16:9
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InInventory sbartype1, 1
+{
+
+
+
+
+// Keys
+	//drawimage "KEYS", 304, 0;
+	drawswitchableimage bluecard && blueSkull, "nullimage", "STKEYS0", "STKEYS3", "STKEYS6", 56, 185;
+	drawswitchableimage yellowcard && yellowSkull, "nullimage", "STKEYS1", "STKEYS4", "STKEYS7", 66, 185;
+	drawswitchableimage redCard && redSkull, "nullimage", "STKEYS2", "STKEYS5", "STKEYS8", 76, 185;
+
+
+// Inventory Items
+	drawselectedinventory alternateonempty, SMALLFONT, 240, 169
+	{
+		drawmugshot "STF", 5, 1143, 1168;
+	}
+
+
+// Armor
+	//drawimage armoricon, 78, 200; next to the mugshot
+		drawimage armoricon, 33, 186;
+        drawnumber 6, SMALLFONT, green, armor, drawshadow | whennotzero, 45, 188, 0, yellow, 10, blue, 100;
+		
+		drawnumber 2, INDEXFONT, blue, SavePercent, whennotzero, 45, 182, 0, green, 46, red, 65;
+
+// Health
+		
+		InInventory GenderMale, 1
+		{
+		drawmugshot "STM", 5, -25, 154;
+		}
+		
+		InInventory GenderFemale, 1
+		{
+		drawmugshot "GAL", 5, -25, 154;
+		}
+		
+        drawnumber 6, SMALLFONT, yellow, health, drawshadow, 0, 188, 0, red, 40, green, 71;
+
+
+//		drawimage translatable "STFBANY", 58, 169;
+
+	//drawimage "ARTIAMMO", 278, 159;
+
+		drawimage ammoicon2, 290, 181;
+		drawnumber 4, DIGINUMBER, red, ammo2, 290, 185, 0;
+		
+		drawimage ammoicon1, 330, 181;
+		drawnumber 4, DIGINUMBER, red, ammo1, 340, 185, 0;
+
+		drawimage "ARTICAS2", 0, 124;
+
+        
+        
+		
+	//STAMINA	
+	drawnumber 4, SMALLFONT, white, Ammo UsedStamina, whennotzero | interpolate(4), 166, 190, 0;
+	
+	
+	//RADSUIT
+	drawnumber 4, SMALLFONT, green, PowerupTime RadSuit, whennotzero, 166, 182, 0;
+	
+	//INVULNERABILITY
+	drawnumber 4, SMALLFONT, Black, PowerupTime InvulnerabilitySphere, whennotzero, 166, 182, 0;
+	
+	//INVISIBILITY
+	drawnumber 4, SMALLFONT, Blue, PowerupTime BlurSphere, whennotzero, 166, 176, 0;
+	
+	//INFRARED
+	drawnumber 4, SMALLFONT, Blue, PowerupTime ArtiTorch, whennotzero, 166, 168, 0;
+	
+	
+	//GRENADES
+	drawimage "GRNDA", 255, 195;
+	drawnumber 4, SMALLFONT, red, Ammo GrenadeAmmo, 260, 185, 0;
+	
+	
+	gamemode deathmatch, teamgame
+	{
+     	drawnumber 8, SMALLFONT, darkred, frags, 302, 8;
+       DrawString SMALLFONT, darkred, "Frags", 302, 0;
+   
+        }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// SIMPLE 4:3
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InInventory sbartype2, 1
+{
+
+// Keys
+	//drawimage "KEYS", 304, 0;
+	drawswitchableimage bluecard && blueSkull, "nullimage", "STKEYS0", "STKEYS3", "STKEYS6", 60, 185;
+	drawswitchableimage yellowcard && yellowSkull, "nullimage", "STKEYS1", "STKEYS4", "STKEYS7", 70, 185;
+	drawswitchableimage redCard && redSkull, "nullimage", "STKEYS2", "STKEYS5", "STKEYS8", 80, 185;
+
+
+// Inventory Items
+	drawselectedinventory alternateonempty, SMALLFONT, 200, 169
+	{
+		drawmugshot "STF", 5, 1143, 1168;
+	}
+
+
+
+// Armor
+	//drawimage armoricon, 78, 200; next to the mugshot
+		drawimage armoricon, 48, 186;
+        drawnumber 6, SMALLFONT, green, armor, drawshadow | whennotzero, 60, 188, 0, yellow, 10, blue, 100;
+		
+		drawnumber 2, INDEXFONT, blue, SavePercent, whennotzero, 60, 182, 0, green, 46, red, 65;
+
+        
+// Health
+		
+		InInventory GenderMale, 1
+		{
+		drawmugshot "STM", 5, 2, 154;
+		}
+		
+		InInventory GenderFemale, 1
+		{
+		drawmugshot "GAL", 5, -2, 154;
+		}
+		
+        drawnumber 6, SMALLFONT, yellow, health, drawshadow, 30, 188, 0, red, 40, green, 71;
+
+
+//		drawimage translatable "STFBANY", 58, 169;
+
+	//drawimage "ARTIAMMO", 278, 159;
+
+		drawimage ammoicon2, 240, 181;
+		drawnumber 4, DIGINUMBER, red, ammo2, 250, 185, 0;
+		
+		drawimage ammoicon1, 300, 181;
+		drawnumber 4, DIGINUMBER, red, ammo1, 310, 185, 0;
+
+		drawimage "ARTICAS2", 0, 124;
+
+        
+        
+		
+	//STAMINA	
+	drawnumber 4, SMALLFONT, white, Ammo UsedStamina, whennotzero | interpolate(4), 166, 190, 0;
+	
+	
+	//RADSUIT
+	drawnumber 4, SMALLFONT, green, PowerupTime RadSuit, whennotzero, 166, 182, 0;
+	
+	//INVULNERABILITY
+	drawnumber 4, SMALLFONT, Black, PowerupTime InvulnerabilitySphere, whennotzero, 166, 182, 0;
+	
+	//INVISIBILITY
+	drawnumber 4, SMALLFONT, Blue, PowerupTime BlurSphere, whennotzero, 166, 176, 0;
+	
+	//INFRARED
+	drawnumber 4, SMALLFONT, Blue, PowerupTime ArtiTorch, whennotzero, 166, 168, 0;
+	
+	
+	//GRENADES
+	drawimage "GRNDA", 294, 160;
+	drawnumber 4, SMALLFONT, red, Ammo GrenadeAmmo, 300, 150, 0;
+
+
+	gamemode deathmatch, teamgame
+		{
+     	drawnumber 8, SMALLFONT, darkred, frags, 302, 8;
+       DrawString SMALLFONT, darkred, "Frags", 302, 0;
+   
+        }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Minimal
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InInventory sbartype3, 1
+{
+
+	// Keys
+	//drawimage "KEYS", 304, 0;
+	drawswitchableimage bluecard && blueSkull, "nullimage", "STKEYS0", "STKEYS3", "STKEYS6", 80, 192;
+	drawswitchableimage yellowcard && yellowSkull, "nullimage", "STKEYS1", "STKEYS4", "STKEYS7", 90, 192;
+	drawswitchableimage redCard && redSkull, "nullimage", "STKEYS2", "STKEYS5", "STKEYS8", 100, 192;
+
+
+// Inventory Items
+	drawselectedinventory alternateonempty, SMALLFONT, 200, 169
+	{
+		drawmugshot "STF", 5, 1143, 1168;
+	}
+
+
+
+// Armor
+
+        drawnumber 6, BIGFONT, green, armor, whennotzero, 80, 185, 0, yellow, 10, blue, 100;
+// Health
+        drawnumber 6, BIGFONT, yellow, health, whennotzero, 35, 185, 0, red, 40, green, 71;
+
+//Ammo
+		drawnumber 4, BIGFONT, red, ammo2, 250, 185, 0;
+		drawnumber 4, BIGFONT, red, ammo1, 310, 185, 0;
+
+		drawimage "ARTICAS2", 0, 124;
+
+
+	drawimage "GRNDA", 335, 190;
+	drawnumber 4, SMALLFONT, red, Ammo GrenadeAmmo, 340, 190, 0;
+
+	
+	gamemode deathmatch, teamgame
+		{
+     	drawnumber 8, SMALLFONT, darkred, frags, 302, 8;
+       DrawString SMALLFONT, darkred, "Frags", 302, 0;
+   
+        }
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Doom Nukem's Full Helmet
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+InInventory sbartype4, 1
+{
+	// basic layout
+	DrawImage "PLAYSCRN", -54, 0;
+	Alpha 0.5
+	
+
+	// health and armor bars
+	Alpha 0.75
+	DrawBar "HealthFu", "HealthEm", Health, horizontal, interpolate(8), 22, 159;
+	Alpha 0.75
+	DrawNumber 3, DIGIFONT_SMALL, DoomNukemStatusBarGreen, Health, Alignment(right), fillzeros, 68, 168;
+	DrawBar "ArmorFul", "ArmorEmp", Armor, horizontal, interpolate(8), 21, 174;
+	Alpha 0.75
+	DrawNumber 3, DIGIFONT_SMALL, DoomNukemStatusBarGreen, Armor, Alignment(right), fillzeros, 71, 179;
+
+	// ammo bar
+	Alpha 0.75
+	
+	UsesSecondaryAmmo
+	{
+	DrawNumber 3, DIGIFONT_LARGE, DoomNukemStatusBarGreen, Ammo2, Alignment(left), fillzeros, 247, 172;
+	DrawNumber 3, DIGIFONT_SMALL, DoomNukemStatusBarGreen, Ammo1, Alignment(left), fillzeros, 282, 178;
+	}
+	
+	UsesSecondaryAmmo not
+	{
+	DrawNumber 3, DIGIFONT_LARGE, DoomNukemStatusBarGreen, Ammo1, Alignment(left), fillzeros, 257, 172;
+	}
+	
+	// level stats
+	Alpha 0.75
+	drawnumber 4, AMMOFONT, DoomNukemIndexGreen, kills, drawshadow(2, 2), 73, 24;
+	Alpha 0.75
+	drawnumber 4, AMMOFONT, DoomNukemIndexGreen, monsters, Alignment(left), drawshadow(2, 2), 81, 24;
+	Alpha 0.75
+	drawnumber 3, AMMOFONT, DoomNukemIndexGreen, items, drawshadow(2, 2), 73, 31;
+	Alpha 0.75
+	drawnumber 3, AMMOFONT, DoomNukemIndexGreen, totalitems, Alignment(left), drawshadow(2, 2), 81, 31;
+	Alpha 0.75
+	drawnumber 2, AMMOFONT, DoomNukemIndexGreen, secrets, drawshadow(2, 2), 79, 38;
+	Alpha 0.75
+	drawnumber 2, AMMOFONT, DoomNukemIndexGreen, totalsecrets, Alignment(left), drawshadow(2, 2), 86, 38;
+
+	// keys
+	DrawKeyBar 1, horizontal, 9, 252, 32, 0;
+	DrawKeyBar 1, horizontal, 9, 259, 31, 1;
+	DrawKeyBar 1, horizontal, 9, 266, 30, 2;
+	DrawKeyBar 1, horizontal, 9, 273, 29, 3;
+	DrawKeyBar 1, horizontal, 9, 280, 28, 4;
+	DrawKeyBar 1, horizontal, 9, 287, 27, 5;
+
+	// hud face :)
+
+	InInventory GenderMale, 1
+		{
+		DrawImage "HEADSUP", -54, 0;
+		drawmugshot "STM", 5, 176, 7;
+		}
+		
+		InInventory GenderFemale, 1
+		{
+		DrawImage "HEADSUP2", -54, 0;
+		drawmugshot "GAL", 5, 176, 7;
+		}
+}	
+
+
+
+
+//////////////////////////////////////////////////////////////////
+//End Statusbar
+}

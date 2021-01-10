@@ -1,0 +1,51 @@
+ACTOR NightmareTeeth
+{
+	Renderstyle Subtract
+   Height 2
+   Radius 2
+   Speed 6
+   Scale 0.15
+   +DOOMBOUNCE
+   - NOGRAVITY
+   +WINDTHRUST
+   +CLIENTSIDEONLY
+   +MOVEWITHSECTOR
+   +MISSILE
+   +NOBLOCKMAP
+   -DROPOFF
+   +NOTELEPORT
+   +FORCEXYBILLBOARD
+   +NOTDMATCH
+   +THRUACTORS
+   +GHOST
+   States
+   {
+   Spawn:
+      XTET ABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGHABCDEFGH 3
+      Stop
+
+   Death:
+	  TNT1 A 0
+	  TNT1 A 0 A_QueueCorpse
+      LCPJ A 0 A_Jump(256,"Rest1","Rest2")
+      Goto Rest1
+    Rest1:
+      XTET C 250
+      TNT1 A 0 A_CheckSight("Vanish")
+	Rest2:
+      XTET G 250
+      TNT1 A 0 A_CheckSight("Vanish")
+    Loop
+  
+     Vanish:
+     TNT1 A 0
+     Stop
+   }
+}
+
+
+ACTOR NightmareTeethNoBounce: Teeth
+{
+-DOOMBOUNCE
+}
+
